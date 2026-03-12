@@ -24,4 +24,4 @@ const compareFiles = (json1, json2) => {
   return result
 }
 
-export default compareFiles;
+export default compareFiles

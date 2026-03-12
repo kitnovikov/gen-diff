@@ -2,7 +2,7 @@ import compareFiles from './compareFiles.js'
 import stringify from './formatters/stringify.js'
 import { resolveFile, readFile } from './utils.js'
 
-const genDiff = (filepath1, filepath2, format = '') => {
+const genDiff = (filepath1, filepath2) => {
   try {
     if (!filepath1 || !filepath2) {
       throw new Error('Path to files are not specified')
