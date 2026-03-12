@@ -17,7 +17,7 @@
   "scripts": {
     "lint": "npx eslint .",
     "lint:fix": "npx eslint --fix .",
-    "test": "jest --watch"
+    "test": "jest"
   },
   "devDependencies": {
     "@babel/core": "^7.29.0",
