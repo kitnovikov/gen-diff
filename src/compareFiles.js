@@ -1,3 +1,6 @@
+import { makeNodeInternal, makeNodeLeaf, makeNodeLeft, makeNodeRight } from './entities/node.js'
+import { isObject } from './utils.js'
+
 const compareFiles = (json1, json2) => {
   const keys = Object.keys({ ...json1, ...json2 }).sort()
   const result = []
@@ -6,18 +9,20 @@ const compareFiles = (json1, json2) => {
     const value1 = json1[key]
     const value2 = json2[key]
 
-    if (value1 == value2) {
-      result.push({ key: key, value: value1, char: ' ' })
+    if (isObject(value1) && isObject(value2)) {
+      result.push(makeNodeInternal(key, compareFiles(value1, value2)))
     }
-    else if (Object.hasOwn(json1, key) && !Object.hasOwn(json2, key)) {
-      result.push({ key: key, value: value1, char: '-' })
+    else if (value1 === value2) {
+      result.push(makeNodeInternal(key, value1))
     }
-    else if (!Object.hasOwn(json1, key) && Object.hasOwn(json2, key)) {
-      result.push({ key: key, value: value2, char: '+' })
+    else if (!Object.hasOwn(json2, key)) {
+      result.push(makeNodeLeft(key, value1))
+    }
+    else if (!Object.hasOwn(json1, key)) {
+      result.push(makeNodeRight(key, value2))
     }
     else {
-      result.push({ key: key, value: value1, char: '-' })
-      result.push({ key: key, value: value2, char: '+' })
+      result.push(makeNodeLeaf(key, value1, value2))
     }
   }
 

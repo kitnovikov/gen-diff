@@ -1,8 +1,10 @@
 import compareFiles from './compareFiles.js'
-import stringify from './formatters/stringify.js'
 import { resolveFile, readFile } from './utils.js'
+import parsed from './parsers/index.js'
+import formatters from './formatters/index.js'
+import path from 'path'
 
-const genDiff = (filepath1, filepath2) => {
+const genDiff = (filepath1, filepath2, format = 'stylish') => {
   try {
     if (!filepath1 || !filepath2) {
       throw new Error('Path to files are not specified')
@@ -11,12 +13,12 @@ const genDiff = (filepath1, filepath2) => {
     const absolutePath1 = resolveFile(filepath1)
     const absolutePath2 = resolveFile(filepath2)
 
-    const data1 = JSON.parse(readFile(absolutePath1))
-    const data2 = JSON.parse(readFile(absolutePath2))
+    const data1 = parsed(readFile(absolutePath1), path.extname(absolutePath1).slice(1))
+    const data2 = parsed(readFile(absolutePath2), path.extname(absolutePath2).slice(1))
 
     const diff = compareFiles(data1, data2)
 
-    return stringify(diff)
+    return formatters(format)(diff)
   }
   catch (e) {
     return e
@@ -25,4 +27,6 @@ const genDiff = (filepath1, filepath2) => {
 
 export default genDiff
 
-console.log(genDiff('/Users/nikita/Desktop/Projects/gen-diff/__fixtures__/file1.json', 'file2.json'))
+const result = genDiff('/Users/nikita/Desktop/Projects/gen-diff/__fixtures__/file1.json', 'file2.json')
+
+console.log(result)

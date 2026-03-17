@@ -63,9 +63,14 @@ const resolveFile = (filename) => {
 
 const readFile = filepath => fs.readFileSync(filepath, 'utf-8')
 
+const isObject = (obj) => {
+  return typeof obj === 'object' && !Array.isArray(obj) && obj !== null
+}
+
 export {
   buildDirectoryTree,
   findPathsByFilename,
   resolveFile,
   readFile,
+  isObject,
 }
